@@ -153,6 +153,7 @@ export type ClientCredentialRequest = Partial<Omit<CommonClientCredentialRequest
 export class ConfidentialClientApplication extends ClientApplication implements IConfidentialClientApplication {
     constructor(configuration: Configuration);
     acquireTokenByClientCredential(request: ClientCredentialRequest): Promise<AuthenticationResult | null>;
+    acquireTokenByUserFederatedIdentityCredential(request: UserFederatedIdentityCredentialRequest): Promise<AuthenticationResult | null>;
     acquireTokenOnBehalfOf(request: OnBehalfOfRequest): Promise<AuthenticationResult | null>;
     SetAppTokenProvider(provider: IAppTokenProvider): void;
 }
@@ -565,6 +566,18 @@ export class TokenCache implements ISerializableTokenCache, ITokenCache {
 }
 
 export { TokenCacheContext }
+
+// @public
+export type UserFederatedIdentityCredentialRequest = Omit<BaseAuthRequest, "extraQueryParameters" | "extraParameters"> & {
+    assertion: string;
+    clientAssertion?: ClientAssertion_2;
+} & ({
+    userObjectId: string;
+    username?: never;
+} | {
+    username: string;
+    userObjectId?: never;
+});
 
 // Warning: (ae-forgotten-export) The symbol "CommonUsernamePasswordRequest" needs to be exported by the entry point index.d.ts
 //
