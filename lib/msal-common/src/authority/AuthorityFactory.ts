@@ -67,6 +67,9 @@ export async function createDiscoveredInstance(
         )();
         return acquireTokenAuthority;
     } catch (e) {
-        throw createClientAuthError(ClientAuthErrorCodes.endpointResolutionError, "");
+        throw createClientAuthError(
+            ClientAuthErrorCodes.endpointResolutionError,
+            ""
+        );
     }
 }
