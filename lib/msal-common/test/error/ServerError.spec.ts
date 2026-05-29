@@ -41,4 +41,10 @@ describe("ServerError.ts Class Unit Tests", () => {
         expect(err.stack?.includes("ServerError.spec.ts")).toBe(true);
         expect(err.status).toBeUndefined();
     });
+
+    it("ServerError constructor sets correlationId when provided", () => {
+        const correlationId = "server-error-corr-id";
+        const err = new ServerError("code", correlationId, "msg");
+        expect(err.correlationId).toBe(correlationId);
+    });
 });

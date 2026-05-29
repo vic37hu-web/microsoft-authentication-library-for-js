@@ -25,4 +25,13 @@ describe("JoseHeaderError.ts Class Unit Tests", () => {
             expect(err.stack?.includes("JoseHeaderError.spec.ts")).toBe(true);
         });
     }
+
+    it("createJoseHeaderError sets correlationId when provided", () => {
+        const correlationId = "jose-header-corr-id";
+        const err = createJoseHeaderError(
+            JoseHeaderErrorCodes.missingKidError,
+            correlationId
+        );
+        expect(err.correlationId).toBe(correlationId);
+    });
 });
