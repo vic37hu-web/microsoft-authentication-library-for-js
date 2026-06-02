@@ -1593,7 +1593,7 @@ describe("SilentIframeClient", () => {
                 loginHint: "testLoginHint",
             });
 
-            expect(waitForBridgeResponseSpy.mock.calls[0][5]).toEqual({
+            expect(waitForBridgeResponseSpy.mock.calls[0][4]).toEqual({
                 iframeTimeoutTelemetry: true,
             });
         });
@@ -1611,7 +1611,7 @@ describe("SilentIframeClient", () => {
                 loginHint: "testLoginHint",
             });
 
-            expect(waitForBridgeResponseSpy.mock.calls[0][5]).toEqual({
+            expect(waitForBridgeResponseSpy.mock.calls[0][4]).toEqual({
                 iframeTimeoutTelemetry: false,
             });
         });
