@@ -2680,7 +2680,7 @@ declare namespace InteractionRequiredAuthErrorCodes {
         noTokensFound,
         nativeAccountUnavailable,
         refreshTokenExpired,
-        uxNotAllowed,
+        uiNotAllowed,
         interactionRequired,
         consentRequired,
         loginRequired,
@@ -3220,7 +3220,7 @@ const noNetworkConnectivity = "no_network_connectivity";
 // Warning: (ae-missing-release-tag) "normalizeUrlForComparison" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
 // @public
-function normalizeUrlForComparison(url: string): string;
+function normalizeUrlForComparison(url: string, logger?: Logger, correlationId?: string): string;
 
 // Warning: (ae-missing-release-tag) "NOT_APPLICABLE" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
@@ -3577,9 +3577,20 @@ export type PerformanceEvent = {
     migratedATCount?: number;
     migratedITCount?: number;
     migratedRTCount?: number;
-    expiredCacheRemovedCount?: number;
-    expiredAcntRemovedCount?: number;
-    invalidCacheCount?: number;
+    ttlExpiredAcntCount?: number;
+    ttlExpiredITCount?: number;
+    ttlExpiredATCount?: number;
+    ttlExpiredRTCount?: number;
+    decryptFailedAcntCount?: number;
+    decryptFailedITCount?: number;
+    decryptFailedATCount?: number;
+    decryptFailedRTCount?: number;
+    invalidAcntCount?: number;
+    invalidITCount?: number;
+    invalidATCount?: number;
+    invalidRTCount?: number;
+    expiredATCount?: number;
+    expiredRTCount?: number;
     unencryptedCacheCount?: number;
     encryptedCacheCount?: number;
     encryptedCacheExpiredCount?: number;
@@ -4437,6 +4448,35 @@ export class StubPerformanceClient implements IPerformanceClient {
     startMeasurement(measureName: string, correlationId?: string | undefined): InProgressPerformanceEvent;
 }
 
+// Warning: (ae-internal-missing-underscore) The name "StubServerTelemetryManager" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
+export class StubServerTelemetryManager extends ServerTelemetryManager {
+    constructor();
+    // (undocumented)
+    cacheFailedRequest(): void;
+    // (undocumented)
+    clearNativeBrokerErrorCode(): void;
+    // (undocumented)
+    clearTelemetryCache(): void;
+    // (undocumented)
+    generateCurrentRequestHeaderValue(): string;
+    // (undocumented)
+    generateLastRequestHeaderValue(): string;
+    // (undocumented)
+    getNativeBrokerErrorCode(): string | undefined;
+    // (undocumented)
+    getRegionDiscoveryFields(): string;
+    // (undocumented)
+    incrementCacheHits(): number;
+    // (undocumented)
+    setCacheOutcome(): void;
+    // (undocumented)
+    setNativeBrokerErrorCode(): void;
+    // (undocumented)
+    updateRegionDiscoveryMetadata(): void;
+}
+
 // Warning: (ae-missing-release-tag) "SubMeasurement" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
 // @public (undocumented)
@@ -4634,6 +4674,9 @@ const tokenRequestEmpty = "token_request_empty";
 // @public
 function toSecondsFromDate(date: Date): number;
 
+// @public
+const uiNotAllowed = "ui_not_allowed";
+
 // Warning: (ae-missing-release-tag) "unexpectedCredentialType" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
 // @public (undocumented)
@@ -4722,7 +4765,8 @@ declare namespace UrlUtils {
         stripLeadingHashOrQuery,
         getDeserializedResponse,
         mapToQueryString,
-        normalizeUrlForComparison
+        normalizeUrlForComparison,
+        validateUrl
     }
 }
 export { UrlUtils }
@@ -4732,15 +4776,17 @@ export { UrlUtils }
 // @public (undocumented)
 const userCanceled = "user_canceled";
 
-// @public
-const uxNotAllowed = "ux_not_allowed";
-
 // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
 // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
 // Warning: (ae-missing-release-tag) "validateAuthorizationResponse" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
 // @public
 function validateAuthorizationResponse(serverResponse: AuthorizeResponse, requestState: string): void;
+
+// Warning: (ae-missing-release-tag) "validateUrl" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+//
+// @public
+function validateUrl(url: string, logger?: Logger, correlationId?: string): void;
 
 // Warning: (ae-internal-missing-underscore) The name "ValidCacheType" should be prefixed with an underscore because the declaration is marked as @internal
 //
@@ -4755,7 +4801,7 @@ export type ValidCredentialType = IdTokenEntity | AccessTokenEntity | RefreshTok
 // Warning: (ae-missing-release-tag) "version" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
 // @public (undocumented)
-export const version = "16.6.2";
+export const version = "16.7.0";
 
 // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
 // Warning: (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
