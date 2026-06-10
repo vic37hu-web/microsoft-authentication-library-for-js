@@ -121,9 +121,9 @@ export function createNativeAuthError(
                     correlationId
                 );
                 break;
-            case NativeStatusCodes.UX_NOT_ALLOWED:
+            case NativeStatusCodes.UI_NOT_ALLOWED:
                 error = createInteractionRequiredAuthError(
-                    InteractionRequiredAuthErrorCodes.uxNotAllowed,
+                    InteractionRequiredAuthErrorCodes.uiNotAllowed,
                     correlationId
                 );
                 break;
