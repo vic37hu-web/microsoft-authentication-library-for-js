@@ -6,11 +6,9 @@
 import {
     Logger,
     IPerformanceClient,
-    invoke,
     Authority,
     CommonAuthorizationUrlRequest,
 } from "@azure/msal-common/browser";
-import * as BrowserPerformanceEvents from "../telemetry/BrowserPerformanceEvents.js";
 import {
     createBrowserAuthError,
     BrowserAuthErrorCodes,
@@ -19,13 +17,13 @@ import { BrowserConfiguration } from "../config/Configuration.js";
 import { getCodeForm, getEARForm } from "../protocol/Authorize.js";
 
 /**
- * Creates a hidden iframe to given URL using user-requested scopes as an id.
- * @param urlNavigate
- * @param userRequestScopes
+ * Navigates the given hidden iframe to the provided URL.
+ * @param frame
+ * @param requestUrl
  */
 export async function initiateCodeRequest(
+    frame: HTMLIFrameElement,
     requestUrl: string,
-    performanceClient: IPerformanceClient,
     logger: Logger,
     correlationId: string
 ): Promise<HTMLIFrameElement> {
@@ -38,23 +36,18 @@ export async function initiateCodeRequest(
         );
     }
 
-    return invoke(
-        loadFrameSync,
-        BrowserPerformanceEvents.SilentHandlerLoadFrameSync,
-        logger,
-        performanceClient,
-        correlationId
-    )(requestUrl);
+    frame.src = requestUrl;
+    return frame;
 }
 
 export async function initiateCodeFlowWithPost(
+    frame: HTMLIFrameElement,
     config: BrowserConfiguration,
     authority: Authority,
     request: CommonAuthorizationUrlRequest,
     logger: Logger,
     performanceClient: IPerformanceClient
 ): Promise<HTMLIFrameElement> {
-    const frame = createHiddenIframe();
     if (!frame.contentDocument) {
         throw "No document associated with iframe!";
     }
@@ -71,13 +64,13 @@ export async function initiateCodeFlowWithPost(
 }
 
 export async function initiateEarRequest(
+    frame: HTMLIFrameElement,
     config: BrowserConfiguration,
     authority: Authority,
     request: CommonAuthorizationUrlRequest,
     logger: Logger,
     performanceClient: IPerformanceClient
 ): Promise<HTMLIFrameElement> {
-    const frame = createHiddenIframe();
     if (!frame.contentDocument) {
         throw "No document associated with iframe!";
     }
@@ -95,25 +88,11 @@ export async function initiateEarRequest(
 
 /**
  * @hidden
- * Loads the iframe synchronously when the navigateTimeFrame is set to `0`
- * @param urlNavigate
- * @param frameName
- * @param logger
- */
-function loadFrameSync(urlNavigate: string): HTMLIFrameElement {
-    const frameHandle = createHiddenIframe();
-
-    frameHandle.src = urlNavigate;
-
-    return frameHandle;
-}
-
-/**
- * @hidden
- * Creates a new hidden iframe or gets an existing one for silent token renewal.
+ * Creates a new hidden iframe for silent token renewal. Callers navigate it
+ * (set `src` or submit a form) after registering the response listener.
  * @ignore
  */
-function createHiddenIframe(): HTMLIFrameElement {
+export function createHiddenIframe(): HTMLIFrameElement {
     const authFrame = document.createElement("iframe");
 
     authFrame.className = "msalSilentIframe";
