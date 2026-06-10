@@ -359,7 +359,12 @@ export async function waitForBridgeResponse(
             if (responseString) {
                 resolve(responseString);
             } else {
-                reject(createBrowserAuthError(redirectBridgeEmptyResponse, ""));
+                reject(
+                    createBrowserAuthError(
+                        redirectBridgeEmptyResponse,
+                        correlationId
+                    )
+                );
             }
         };
     });
