@@ -169,7 +169,8 @@ describe("CacheManager.ts test cases", () => {
                 "User.Read",
                 TEST_TOKEN_LIFETIMES.TEST_ACCESS_TOKEN_EXP,
                 TEST_TOKEN_LIFETIMES.TEST_ACCESS_TOKEN_EXP,
-                mockCrypto.base64Decode
+                mockCrypto.base64Decode,
+                ""
             );
 
             const atKey = generateCredentialKey(at);
@@ -1733,7 +1734,8 @@ describe("CacheManager.ts test cases", () => {
                     testAccessToken,
                     {
                         target: ScopeSet.createSearchScopes(
-                            testAccessToken.target.split(" ")
+                            testAccessToken.target.split(" "),
+                            ""
                         ),
                     },
                     TEST_CONFIG.CORRELATION_ID
@@ -1745,7 +1747,10 @@ describe("CacheManager.ts test cases", () => {
                 mockCache.cacheManager.credentialMatchesFilter(
                     testAccessToken,
                     {
-                        target: ScopeSet.createSearchScopes(["wrong_scope"]),
+                        target: ScopeSet.createSearchScopes(
+                            ["wrong_scope"],
+                            ""
+                        ),
                     },
                     TEST_CONFIG.CORRELATION_ID
                 )
@@ -2091,6 +2096,7 @@ describe("CacheManager.ts test cases", () => {
                     4600,
                     4600,
                     mockCrypto.base64Decode,
+                    "",
                     500,
                     AuthenticationScheme.BEARER,
                     TEST_TOKENS.ACCESS_TOKEN
@@ -2107,6 +2113,7 @@ describe("CacheManager.ts test cases", () => {
                     4600,
                     4600,
                     mockCrypto.base64Decode,
+                    "",
                     500,
                     AuthenticationScheme.BEARER,
                     TEST_TOKENS.ACCESS_TOKEN
@@ -2182,6 +2189,7 @@ describe("CacheManager.ts test cases", () => {
                 4600,
                 4600,
                 mockCrypto.base64Decode,
+                "",
                 500,
                 AuthenticationScheme.BEARER,
                 TEST_TOKENS.ACCESS_TOKEN
@@ -2198,6 +2206,7 @@ describe("CacheManager.ts test cases", () => {
                 4600,
                 4600,
                 mockCrypto.base64Decode,
+                "",
                 500,
                 AuthenticationScheme.POP,
                 TEST_TOKENS.ACCESS_TOKEN
@@ -2214,6 +2223,7 @@ describe("CacheManager.ts test cases", () => {
                 4600,
                 4600,
                 mockCrypto.base64Decode,
+                "",
                 500,
                 AuthenticationScheme.SSH,
                 undefined,
@@ -2280,6 +2290,7 @@ describe("CacheManager.ts test cases", () => {
                 4600,
                 4600,
                 mockCrypto.base64Decode,
+                "",
                 500,
                 // @ts-ignore
                 AuthenticationScheme.BEARER.toLowerCase(),
@@ -2341,6 +2352,7 @@ describe("CacheManager.ts test cases", () => {
                 4600,
                 4600,
                 mockCrypto.base64Decode,
+                "",
                 500,
                 AuthenticationScheme.BEARER,
                 TEST_TOKENS.ACCESS_TOKEN
@@ -2357,6 +2369,7 @@ describe("CacheManager.ts test cases", () => {
                 4600,
                 4600,
                 mockCrypto.base64Decode,
+                "",
                 500,
                 AuthenticationScheme.POP,
                 TEST_TOKENS.ACCESS_TOKEN
@@ -2373,6 +2386,7 @@ describe("CacheManager.ts test cases", () => {
                 4600,
                 4600,
                 mockCrypto.base64Decode,
+                "",
                 500,
                 AuthenticationScheme.SSH,
                 undefined,
@@ -2440,6 +2454,7 @@ describe("CacheManager.ts test cases", () => {
                 4600,
                 4600,
                 mockCrypto.base64Decode,
+                "",
                 500,
                 AuthenticationScheme.BEARER,
                 undefined,
@@ -2457,6 +2472,7 @@ describe("CacheManager.ts test cases", () => {
                 4600,
                 4600,
                 mockCrypto.base64Decode,
+                "",
                 500,
                 AuthenticationScheme.POP,
                 undefined,
@@ -2474,6 +2490,7 @@ describe("CacheManager.ts test cases", () => {
                 4600,
                 4600,
                 mockCrypto.base64Decode,
+                "",
                 500,
                 AuthenticationScheme.SSH,
                 undefined,

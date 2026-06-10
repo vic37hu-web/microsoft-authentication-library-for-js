@@ -121,7 +121,10 @@ export class SilentFlowClient {
 
         const requestTenantId =
             request.account.tenantId ||
-            getTenantFromAuthorityString(request.authority);
+            getTenantFromAuthorityString(
+                request.authority,
+                request.correlationId
+            );
         const tokenKeys = this.cacheManager.getTokenKeys();
         const cachedAccessToken = this.cacheManager.getAccessToken(
             request.account,
@@ -248,7 +251,8 @@ export class SilentFlowClient {
         if (cacheRecord.idToken) {
             idTokenClaims = extractTokenClaims(
                 cacheRecord.idToken.secret,
-                this.config.cryptoInterface.base64Decode
+                this.config.cryptoInterface.base64Decode,
+                request.correlationId
             );
         }
 
@@ -262,7 +266,7 @@ export class SilentFlowClient {
                 );
             }
 
-            checkMaxAge(authTime, request.maxAge);
+            checkMaxAge(authTime, request.maxAge, request.correlationId);
         }
 
         return ResponseHandler.generateAuthenticationResult(

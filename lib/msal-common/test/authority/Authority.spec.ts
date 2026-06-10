@@ -511,7 +511,8 @@ describe("Authority.ts Class Unit Tests", () => {
                 const newAuthorityEndpoint =
                     response.authorization_endpoint.replace(tenant, newTenant);
                 const urlComponents = new UrlString(
-                    newAuthorityEndpoint
+                    newAuthorityEndpoint,
+                    ""
                 ).getUrlComponents();
 
                 // Mimic tenant switching
@@ -560,7 +561,8 @@ describe("Authority.ts Class Unit Tests", () => {
                         newTenantDomain
                     );
                 const urlComponents = new UrlString(
-                    newAuthorityEndpoint
+                    newAuthorityEndpoint,
+                    ""
                 ).getUrlComponents();
 
                 // Mimic tenant switching
@@ -608,7 +610,8 @@ describe("Authority.ts Class Unit Tests", () => {
                 const newAuthorityEndpoint =
                     response.authorization_endpoint.replace(tenant, newTenant);
                 const urlComponents = new UrlString(
-                    newAuthorityEndpoint
+                    newAuthorityEndpoint,
+                    ""
                 ).getUrlComponents();
 
                 // Mimic tenant switching
@@ -3151,7 +3154,8 @@ describe("Authority.ts Class Unit Tests", () => {
 
             const regionalResponse = Authority.replaceWithRegionalInformation(
                 originResponse,
-                "westus2"
+                "westus2",
+                ""
             );
             expect(regionalResponse.authorization_endpoint).toBe(
                 "https://westus2.login.microsoft.com/{tenant}/oauth2/v2.0/authorize/"
@@ -3166,7 +3170,8 @@ describe("Authority.ts Class Unit Tests", () => {
 
             const regionalResponse = Authority.replaceWithRegionalInformation(
                 originResponse,
-                "westus2"
+                "westus2",
+                ""
             );
             expect(regionalResponse.end_session_endpoint).toBeUndefined();
         });
@@ -3175,25 +3180,31 @@ describe("Authority.ts Class Unit Tests", () => {
     describe("getTenantFromAuthorityString", () => {
         it("returns tenantId if authority is a tenant-specific authority", () => {
             expect(
-                getTenantFromAuthorityString(TEST_CONFIG.tenantedValidAuthority)
+                getTenantFromAuthorityString(
+                    TEST_CONFIG.tenantedValidAuthority,
+                    ""
+                )
             ).toBe(TEST_CONFIG.MSAL_TENANT_ID);
         });
         it("returns undefined if authority is a named authority (common, organizations, consumers", () => {
             expect(
-                getTenantFromAuthorityString(TEST_CONFIG.validAuthority)
+                getTenantFromAuthorityString(TEST_CONFIG.validAuthority, "")
             ).toBeUndefined();
             expect(
-                getTenantFromAuthorityString(TEST_CONFIG.organizationsAuthority)
+                getTenantFromAuthorityString(
+                    TEST_CONFIG.organizationsAuthority,
+                    ""
+                )
             ).toBeUndefined();
             expect(
-                getTenantFromAuthorityString(TEST_CONFIG.consumersAuthority)
+                getTenantFromAuthorityString(TEST_CONFIG.consumersAuthority, "")
             ).toBeUndefined();
         });
 
         it("should not throw if authority has no path segments (certain OIDC scenarios)", () => {
             const authorityUrl = "https://login.live.com";
             expect(() =>
-                getTenantFromAuthorityString(authorityUrl)
+                getTenantFromAuthorityString(authorityUrl, "")
             ).not.toThrow();
         });
     });

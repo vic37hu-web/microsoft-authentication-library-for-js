@@ -112,7 +112,8 @@ export function parseAuthResponseFromUrl(): {
 
     const { libraryState } = ProtocolUtils.parseRequestState(
         base64Decode,
-        state
+        state,
+        ""
     );
 
     const { id, meta } = libraryState;
@@ -286,7 +287,8 @@ export async function waitForBridgeResponse(
 
         const { libraryState } = ProtocolUtils.parseRequestState(
             base64Decode,
-            request.state || ""
+            request.state || "",
+            request.correlationId
         );
         const channel = new BroadcastChannel(libraryState.id);
         let responseString: string | undefined = undefined;
@@ -385,7 +387,7 @@ export function getCurrentUri(): string {
  * Gets the homepage url for the current window location.
  */
 export function getHomepage(): string {
-    const currentUrl = new UrlString(window.location.href);
+    const currentUrl = new UrlString(window.location.href, "");
     const urlComponents = currentUrl.getUrlComponents();
     return `${urlComponents.Protocol}//${urlComponents.HostNameAndPort}/`;
 }

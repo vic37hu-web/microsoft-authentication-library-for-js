@@ -411,6 +411,7 @@ export class RefreshTokenClient {
         RequestParameterBuilder.addScopes(
             parameters,
             request.scopes,
+            request.correlationId,
             true,
             this.config.authOptions.authority.options.OIDCOptions?.defaultScopes
         );
@@ -559,6 +560,7 @@ export class RefreshTokenClient {
 
         RequestParameterBuilder.addClaims(
             parameters,
+            request.correlationId,
             request.claims,
             this.config.authOptions.clientCapabilities,
             request.skipBrokerClaims

@@ -759,7 +759,8 @@ export class PopupClient extends StandardInteractionClient {
                         };
                         const absoluteUrl = UrlString.getAbsoluteUrl(
                             mainWindowRedirectUri,
-                            BrowserUtils.getCurrentUri()
+                            BrowserUtils.getCurrentUri(),
+                            this.correlationId
                         );
                         await this.navigationClient.navigateInternal(
                             absoluteUrl,
@@ -779,7 +780,8 @@ export class PopupClient extends StandardInteractionClient {
                 validRequest.state || "",
                 {
                     interactionType: InteractionType.Popup,
-                }
+                },
+                validRequest.correlationId
             );
 
             // Create logout string and navigate user window to logout.
@@ -818,7 +820,8 @@ export class PopupClient extends StandardInteractionClient {
                 };
                 const absoluteUrl = UrlString.getAbsoluteUrl(
                     mainWindowRedirectUri,
-                    BrowserUtils.getCurrentUri()
+                    BrowserUtils.getCurrentUri(),
+                    this.correlationId
                 );
 
                 this.logger.verbose(

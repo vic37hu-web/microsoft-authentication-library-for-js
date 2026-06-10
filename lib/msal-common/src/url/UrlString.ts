@@ -17,17 +17,19 @@ import * as Constants from "../utils/Constants.js";
 export class UrlString {
     // internal url string field
     private _urlString: string;
+    private correlationId: string;
     public get urlString(): string {
         return this._urlString;
     }
 
-    constructor(url: string) {
+    constructor(url: string, correlationId: string) {
         this._urlString = url;
+        this.correlationId = correlationId;
         if (!this._urlString) {
             // Throws error if url is empty
             throw createClientConfigurationError(
                 ClientConfigurationErrorCodes.urlEmptyError,
-                ""
+                correlationId
             );
         }
 
@@ -71,7 +73,7 @@ export class UrlString {
         } catch (e) {
             throw createClientConfigurationError(
                 ClientConfigurationErrorCodes.urlParseError,
-                ""
+                this.correlationId
             );
         }
 
@@ -79,7 +81,7 @@ export class UrlString {
         if (!components.HostNameAndPort || !components.PathSegments) {
             throw createClientConfigurationError(
                 ClientConfigurationErrorCodes.urlParseError,
-                ""
+                this.correlationId
             );
         }
 
@@ -90,7 +92,7 @@ export class UrlString {
         ) {
             throw createClientConfigurationError(
                 ClientConfigurationErrorCodes.authorityUriInsecure,
-                ""
+                this.correlationId
             );
         }
     }
@@ -134,7 +136,10 @@ export class UrlString {
         ) {
             pathArray[0] = tenantId;
         }
-        return UrlString.constructAuthorityUriFromObject(urlObject);
+        return UrlString.constructAuthorityUriFromObject(
+            urlObject,
+            this.correlationId
+        );
     }
 
     /**
@@ -152,7 +157,7 @@ export class UrlString {
         if (!match) {
             throw createClientConfigurationError(
                 ClientConfigurationErrorCodes.urlParseError,
-                ""
+                this.correlationId
             );
         }
 
@@ -180,7 +185,7 @@ export class UrlString {
         return urlComponents;
     }
 
-    static getDomainFromUrl(url: string): string {
+    static getDomainFromUrl(url: string, correlationId: string): string {
         const regEx = RegExp("^([^:/?#]+://)?([^/?#]*)");
 
         const match = url.match(regEx);
@@ -188,16 +193,20 @@ export class UrlString {
         if (!match) {
             throw createClientConfigurationError(
                 ClientConfigurationErrorCodes.urlParseError,
-                ""
+                correlationId
             );
         }
 
         return match[2];
     }
 
-    static getAbsoluteUrl(relativeUrl: string, baseUrl: string): string {
+    static getAbsoluteUrl(
+        relativeUrl: string,
+        baseUrl: string,
+        correlationId: string
+    ): string {
         if (relativeUrl[0] === Constants.FORWARD_SLASH) {
-            const url = new UrlString(baseUrl);
+            const url = new UrlString(baseUrl, correlationId);
             const baseComponents = url.getUrlComponents();
 
             return (
@@ -211,13 +220,17 @@ export class UrlString {
         return relativeUrl;
     }
 
-    static constructAuthorityUriFromObject(urlObject: IUri): UrlString {
+    static constructAuthorityUriFromObject(
+        urlObject: IUri,
+        correlationId: string
+    ): UrlString {
         return new UrlString(
             urlObject.Protocol +
                 "//" +
                 urlObject.HostNameAndPort +
                 "/" +
-                urlObject.PathSegments.join("/")
+                urlObject.PathSegments.join("/"),
+            correlationId
         );
     }
 }

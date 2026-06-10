@@ -337,6 +337,7 @@ export class AuthorizationCodeClient {
         RequestParameterBuilder.addScopes(
             parameters,
             request.scopes,
+            request.correlationId,
             true,
             this.oidcDefaultScopes
         );
@@ -523,6 +524,7 @@ export class AuthorizationCodeClient {
 
         RequestParameterBuilder.addClaims(
             parameters,
+            request.correlationId,
             request.claims,
             this.config.authOptions.clientCapabilities,
             request.skipBrokerClaims

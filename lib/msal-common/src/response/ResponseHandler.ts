@@ -202,7 +202,8 @@ export class ResponseHandler {
         if (serverTokenResponse.id_token) {
             idTokenClaims = extractTokenClaims(
                 serverTokenResponse.id_token || "",
-                this.cryptoObj.base64Decode
+                this.cryptoObj.base64Decode,
+                request.correlationId
             );
 
             // token nonce check (TODO: Add a warning if no nonce is given?)
@@ -225,7 +226,7 @@ export class ResponseHandler {
                     );
                 }
 
-                checkMaxAge(authTime, request.maxAge);
+                checkMaxAge(authTime, request.maxAge, request.correlationId);
             }
         }
 
@@ -244,7 +245,8 @@ export class ResponseHandler {
         if (!!authCodePayload && !!authCodePayload.state) {
             requestStateObj = ProtocolUtils.parseRequestState(
                 this.cryptoObj.base64Decode,
-                authCodePayload.state
+                authCodePayload.state,
+                request.correlationId
             );
         }
 
@@ -412,8 +414,11 @@ export class ResponseHandler {
         if (serverTokenResponse.access_token) {
             // If scopes not returned in server response, use request scopes
             const responseScopes = serverTokenResponse.scope
-                ? ScopeSet.fromString(serverTokenResponse.scope)
-                : new ScopeSet(request.scopes || []);
+                ? ScopeSet.fromString(
+                      serverTokenResponse.scope,
+                      request.correlationId
+                  )
+                : new ScopeSet(request.scopes || [], request.correlationId);
 
             /*
              * Use timestamp calculated before request
@@ -450,6 +455,7 @@ export class ResponseHandler {
                 tokenExpirationSeconds,
                 extendedTokenExpirationSeconds,
                 this.cryptoObj.base64Decode,
+                request.correlationId,
                 refreshOnSeconds,
                 serverTokenResponse.token_type,
                 userAssertionHash,
@@ -571,7 +577,8 @@ export class ResponseHandler {
                 accessToken = cacheRecord.accessToken.secret;
             }
             responseScopes = ScopeSet.fromString(
-                cacheRecord.accessToken.target
+                cacheRecord.accessToken.target,
+                request.correlationId
             ).asArray();
             // Access token expiresOn cached in seconds, converting to Date for AuthenticationResult
             expiresOn = TimeUtils.toDateFromSeconds(
@@ -696,6 +703,7 @@ export function buildAccountToCache(
                 nativeAccountId: nativeAccountId,
             },
             authority,
+            correlationId,
             base64Decode
         );
 

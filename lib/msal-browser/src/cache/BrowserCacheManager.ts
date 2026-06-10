@@ -446,7 +446,8 @@ export class BrowserCacheManager extends CacheManager {
                 const idToken = JSON.parse(rawValue) as IdTokenEntity;
                 const claims = AuthToken.extractTokenClaims(
                     idToken.secret,
-                    base64Decode
+                    base64Decode,
+                    ""
                 );
                 if (claims) {
                     kmsiMap[idToken.homeAccountId] = AuthToken.isKmsi(claims);
@@ -561,7 +562,8 @@ export class BrowserCacheManager extends CacheManager {
 
             const claims = AuthToken.extractTokenClaims(
                 oldSchemaData.secret,
-                base64Decode
+                base64Decode,
+                correlationId
             );
 
             const newIdTokenKey = this.generateCredentialKey(oldSchemaData);
@@ -576,7 +578,8 @@ export class BrowserCacheManager extends CacheManager {
                 Object.keys(
                     AuthToken.extractTokenClaims(
                         currentIdToken.secret,
-                        base64Decode
+                        base64Decode,
+                        correlationId
                     ) || {}
                 ).includes("signin_state");
 
@@ -2428,6 +2431,7 @@ export class BrowserCacheManager extends CacheManager {
                 ? TimeUtils.toSecondsFromDate(result.extExpiresOn)
                 : 0,
             base64Decode,
+            request.correlationId || "",
             undefined, // refreshOn
             result.tokenType as Constants.AuthenticationScheme,
             undefined, // userAssertionHash
@@ -2446,7 +2450,11 @@ export class BrowserCacheManager extends CacheManager {
             cacheRecord,
             result.correlationId,
             AuthToken.isKmsi(
-                AuthToken.extractTokenClaims(result.idToken, base64Decode)
+                AuthToken.extractTokenClaims(
+                    result.idToken,
+                    base64Decode,
+                    result.correlationId
+                )
             ),
             ApiId.hydrateCache
         );

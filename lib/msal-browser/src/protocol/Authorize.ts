@@ -467,7 +467,8 @@ export async function handleResponsePlatformBroker(
     );
     const { userRequestState } = ProtocolUtils.parseRequestState(
         browserCrypto.base64Decode,
-        request.state
+        request.state,
+        request.correlationId
     );
     return invokeAsync(
         nativeInteractionClient.acquireToken.bind(nativeInteractionClient),
@@ -601,7 +602,11 @@ export async function handleResponseEAR(
     instrumentClientData(response, request.correlationId, performanceClient);
 
     // Validate state & check response for errors
-    AuthorizeProtocol.validateAuthorizationResponse(response, request.state);
+    AuthorizeProtocol.validateAuthorizationResponse(
+        response,
+        request.state,
+        request.correlationId
+    );
 
     if (!response.ear_jwe) {
         throw createBrowserAuthError(

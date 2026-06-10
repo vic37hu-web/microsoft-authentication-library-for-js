@@ -137,7 +137,7 @@ export class ClientCredentialClient extends BaseClient {
             authority,
             managedIdentityConfiguration.managedIdentityId?.id ||
                 clientConfiguration.authOptions.clientId,
-            new ScopeSet(request.scopes || []),
+            new ScopeSet(request.scopes || [], request.correlationId),
             cacheManager,
             request.correlationId
         );
@@ -221,7 +221,10 @@ export class ClientCredentialClient extends BaseClient {
             credentialType: Constants.CredentialType.ACCESS_TOKEN,
             clientId: id,
             realm: authority.tenant,
-            target: ScopeSet.createSearchScopes(scopeSet.asArray()),
+            target: ScopeSet.createSearchScopes(
+                scopeSet.asArray(),
+                correlationId
+            ),
         };
 
         const accessTokens = cacheManager.getAccessTokensByFilter(
@@ -358,7 +361,12 @@ export class ClientCredentialClient extends BaseClient {
             this.config.authOptions.clientId
         );
 
-        RequestParameterBuilder.addScopes(parameters, request.scopes, false);
+        RequestParameterBuilder.addScopes(
+            parameters,
+            request.scopes,
+            request.correlationId,
+            false
+        );
 
         RequestParameterBuilder.addGrantType(
             parameters,
@@ -422,6 +430,7 @@ export class ClientCredentialClient extends BaseClient {
         ) {
             RequestParameterBuilder.addClaims(
                 parameters,
+                request.correlationId,
                 request.claims,
                 this.config.authOptions.clientCapabilities
             );

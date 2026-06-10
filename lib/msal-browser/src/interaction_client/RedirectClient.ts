@@ -615,7 +615,8 @@ export class RedirectClient extends StandardInteractionClient {
                 ResponseHandler.validateInteractionType(
                     response,
                     this.browserCrypto,
-                    InteractionType.Redirect
+                    InteractionType.Redirect,
+                    this.correlationId
                 );
             } catch (e) {
                 if (e instanceof AuthError) {
@@ -900,7 +901,8 @@ export class RedirectClient extends StandardInteractionClient {
                 validLogoutRequest.state || "",
                 {
                     interactionType: InteractionType.Redirect,
-                }
+                },
+                validLogoutRequest.correlationId
             );
 
             // Create logout string and navigate user window to logout.
@@ -994,7 +996,8 @@ export class RedirectClient extends StandardInteractionClient {
         const redirectStartPage = requestStartPage || window.location.href;
         const absoluteRedirectStartPage = UrlString.getAbsoluteUrl(
             redirectStartPage,
-            BrowserUtils.getCurrentUri()
+            BrowserUtils.getCurrentUri(),
+            this.correlationId
         );
         // Sanity check the URL before it is cached so we never persist a malformed value (e.g. the literal string "null")
         UrlUtils.validateUrl(

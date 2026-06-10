@@ -59,27 +59,32 @@ export function deserializeResponse(
 export function validateInteractionType(
     response: AuthorizeResponse,
     browserCrypto: ICrypto,
-    interactionType: InteractionType
+    interactionType: InteractionType,
+    correlationId: string
 ): void {
     if (!response.state) {
-        throw createBrowserAuthError(BrowserAuthErrorCodes.noStateInHash, "");
+        throw createBrowserAuthError(
+            BrowserAuthErrorCodes.noStateInHash,
+            correlationId
+        );
     }
 
     const platformStateObj = extractBrowserRequestState(
         browserCrypto,
-        response.state
+        response.state,
+        correlationId
     );
     if (!platformStateObj) {
         throw createBrowserAuthError(
             BrowserAuthErrorCodes.unableToParseState,
-            ""
+            correlationId
         );
     }
 
     if (platformStateObj.interactionType !== interactionType) {
         throw createBrowserAuthError(
             BrowserAuthErrorCodes.stateInteractionTypeMismatch,
-            ""
+            correlationId
         );
     }
 }
