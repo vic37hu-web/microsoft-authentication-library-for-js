@@ -1,0 +1,7 @@
+{
+    "type": "patch",
+    "comment": "Thread correlationId through NestedAppAuthError.createUnsupportedError (accepts optional correlationId from request) and CookieStorage.setUserData stub; pass correlationId at PlatformAuthInteractionClient UrlString.getAbsoluteUrl call.",
+    "packageName": "@azure/msal-browser",
+    "email": "sameera.gajjarapu@microsoft.com",
+    "dependentChangeType": "patch"
+}

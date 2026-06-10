@@ -1,0 +1,7 @@
+{
+    "type": "patch",
+    "comment": "Thread correlationId through validateAuthorizationResponse error sites (stateNotFound, invalidState, server fallback in ServerError/InteractionRequiredAuthError).",
+    "packageName": "@azure/msal-common",
+    "email": "sameera.gajjarapu@microsoft.com",
+    "dependentChangeType": "patch"
+}

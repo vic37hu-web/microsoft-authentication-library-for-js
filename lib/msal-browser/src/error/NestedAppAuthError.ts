@@ -18,7 +18,9 @@ export class NestedAppAuthError extends AuthError {
         this.name = "NestedAppAuthError";
     }
 
-    public static createUnsupportedError(): NestedAppAuthError {
-        return new NestedAppAuthError(unsupportedMethod, "");
+    public static createUnsupportedError(
+        correlationId?: string
+    ): NestedAppAuthError {
+        return new NestedAppAuthError(unsupportedMethod, correlationId || "");
     }
 }

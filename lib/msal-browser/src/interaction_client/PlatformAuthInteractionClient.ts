@@ -405,7 +405,8 @@ export class PlatformAuthInteractionClient extends BaseInteractionClient {
         const redirectUri = navigateToLoginRequestUrl
             ? UrlString.getAbsoluteUrl(
                   request.redirectStartPage || window.location.href,
-                  getCurrentUri()
+                  getCurrentUri(),
+                  this.correlationId
               )
             : getRedirectUri(
                   request.redirectUri,

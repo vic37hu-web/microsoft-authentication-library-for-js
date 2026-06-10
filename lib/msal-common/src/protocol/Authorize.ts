@@ -327,10 +327,12 @@ export function validateAuthorizationResponse(
         throw serverResponse.state
             ? createClientAuthError(
                   ClientAuthErrorCodes.stateNotFound,
+                  correlationId,
                   "Cached State"
               )
             : createClientAuthError(
                   ClientAuthErrorCodes.stateNotFound,
+                  correlationId,
                   "Server State"
               );
     }
@@ -343,6 +345,7 @@ export function validateAuthorizationResponse(
     } catch (e) {
         throw createClientAuthError(
             ClientAuthErrorCodes.invalidState,
+            correlationId,
             serverResponse.state
         );
     }
@@ -352,6 +355,7 @@ export function validateAuthorizationResponse(
     } catch (e) {
         throw createClientAuthError(
             ClientAuthErrorCodes.invalidState,
+            correlationId,
             serverResponse.state
         );
     }
@@ -379,7 +383,7 @@ export function validateAuthorizationResponse(
         ) {
             throw new InteractionRequiredAuthError(
                 serverResponse.error || "",
-                serverResponse.correlation_id || "",
+                serverResponse.correlation_id || correlationId,
                 serverResponse.error_description,
                 serverResponse.suberror,
                 serverResponse.timestamp || "",
@@ -391,7 +395,7 @@ export function validateAuthorizationResponse(
 
         throw new ServerError(
             serverResponse.error || "",
-            serverResponse.correlation_id || "",
+            serverResponse.correlation_id || correlationId,
             serverResponse.error_description,
             serverResponse.suberror,
             serverErrorNo
