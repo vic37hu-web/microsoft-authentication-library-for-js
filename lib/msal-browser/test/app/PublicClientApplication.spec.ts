@@ -1935,7 +1935,8 @@ describe("PublicClientApplication.ts Class Unit Tests", () => {
                 pca.acquireTokenRedirect({ scopes: ["openid"] })
             ).rejects.toMatchObject(
                 createBrowserAuthError(
-                    BrowserAuthErrorCodes.interactionInProgress
+                    BrowserAuthErrorCodes.interactionInProgress,
+                    ""
                 )
             );
 
@@ -2419,7 +2420,8 @@ describe("PublicClientApplication.ts Class Unit Tests", () => {
                 pca.acquireTokenRedirect({ scopes: [] })
             ).rejects.toMatchObject(
                 createBrowserAuthError(
-                    BrowserAuthErrorCodes.uninitializedPublicClientApplication
+                    BrowserAuthErrorCodes.uninitializedPublicClientApplication,
+                    ""
                 )
             );
 
