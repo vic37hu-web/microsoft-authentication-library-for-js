@@ -1,6 +1,6 @@
 {
     "type": "minor",
-    "comment": "Make correlationId a required parameter on AuthError and all derived error classes; remove setCorrelationId in favor of direct assignment; pass correlationId to msal-common helpers updated to require it (UrlString/ScopeSet/Authority/extractTokenClaims) and thread it through NestedAppAuthError.createUnsupportedError, CookieStorage.setUserData, PlatformAuthInteractionClient UrlString.getAbsoluteUrl, and BrowserUtils.getHomepage [#8609](https://github.com/AzureAD/microsoft-authentication-library-for-js/pull/8609)",
+    "comment": "Make correlationId a required parameter on AuthError and all derived error classes [#8609](https://github.com/AzureAD/microsoft-authentication-library-for-js/pull/8609)",
     "packageName": "@azure/msal-browser",
     "email": "sameera.gajjarapu@microsoft.com",
     "dependentChangeType": "patch"
