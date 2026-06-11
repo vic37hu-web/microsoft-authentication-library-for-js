@@ -185,7 +185,9 @@ export class PublicClientApplication
         if (request.redirectUri) {
             // If it's not a broker fallback scenario, we throw an error
             if (!this.config.broker.nativeBrokerPlugin) {
-                throw NodeAuthError.createRedirectUriNotSupportedError();
+                throw NodeAuthError.createRedirectUriNotSupportedError(
+                    correlationId
+                );
             }
             // If a redirect URI is provided for a broker flow but MSAL runtime startup failed, we fall back to the browser flow and will ignore the redirect URI provided for the broker flow
             request.redirectUri = "";
@@ -211,7 +213,10 @@ export class PublicClientApplication
                 });
 
             // Wait for server to be listening
-            const redirectUri = await this.waitForRedirectUri(loopbackClient);
+            const redirectUri = await this.waitForRedirectUri(
+                loopbackClient,
+                correlationId
+            );
 
             const validRequest: AuthorizationUrlRequest = {
                 ...remainingProperties,
@@ -239,7 +244,9 @@ export class PublicClientApplication
                     authCodeResponse.suberror
                 );
             } else if (!authCodeResponse.code) {
-                throw NodeAuthError.createNoAuthCodeInResponseError();
+                throw NodeAuthError.createNoAuthCodeInResponseError(
+                    correlationId
+                );
             }
 
             const clientInfo = authCodeResponse.client_info;
@@ -290,7 +297,9 @@ export class PublicClientApplication
         if (request.redirectUri) {
             // If it's not a broker fallback scenario, we throw an error
             if (!this.config.broker.nativeBrokerPlugin) {
-                throw NodeAuthError.createRedirectUriNotSupportedError();
+                throw NodeAuthError.createRedirectUriNotSupportedError(
+                    correlationId
+                );
             }
             request.redirectUri = "";
         }
@@ -363,10 +372,12 @@ export class PublicClientApplication
     /**
      * Attempts to retrieve the redirectUri from the loopback server. If the loopback server does not start listening for requests within the timeout this will throw.
      * @param loopbackClient - developer provided custom loopback server implementation
+     * @param correlationId - correlation id of the request
      * @returns
      */
     private async waitForRedirectUri(
-        loopbackClient: ILoopbackClient
+        loopbackClient: ILoopbackClient,
+        correlationId: string
     ): Promise<string> {
         return new Promise<string>((resolve, reject) => {
             let ticks = 0;
@@ -377,7 +388,11 @@ export class PublicClientApplication
                     ticks
                 ) {
                     clearInterval(id);
-                    reject(NodeAuthError.createLoopbackServerTimeoutError());
+                    reject(
+                        NodeAuthError.createLoopbackServerTimeoutError(
+                            correlationId
+                        )
+                    );
                     return;
                 }
 

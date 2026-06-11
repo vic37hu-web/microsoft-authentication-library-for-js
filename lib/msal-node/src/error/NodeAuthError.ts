@@ -82,10 +82,12 @@ export class NodeAuthError extends AuthError {
     /**
      * Creates an error thrown if the server response does not contain an auth code.
      */
-    static createNoAuthCodeInResponseError(): NodeAuthError {
+    static createNoAuthCodeInResponseError(
+        correlationId: string = ""
+    ): NodeAuthError {
         return new NodeAuthError(
             NodeAuthErrorMessage.noAuthCodeInResponse.code,
-            "",
+            correlationId,
             `${NodeAuthErrorMessage.noAuthCodeInResponse.desc}`
         );
     }
@@ -115,10 +117,12 @@ export class NodeAuthError extends AuthError {
     /**
      * Creates an error thrown if the loopback server times out registering the auth code listener.
      */
-    static createLoopbackServerTimeoutError(): NodeAuthError {
+    static createLoopbackServerTimeoutError(
+        correlationId: string = ""
+    ): NodeAuthError {
         return new NodeAuthError(
             NodeAuthErrorMessage.loopbackServerTimeout.code,
-            "",
+            correlationId,
             `${NodeAuthErrorMessage.loopbackServerTimeout.desc}`
         );
     }
@@ -126,10 +130,10 @@ export class NodeAuthError extends AuthError {
     /**
      * Creates an error thrown when the state is not present.
      */
-    static createStateNotFoundError(): NodeAuthError {
+    static createStateNotFoundError(correlationId: string = ""): NodeAuthError {
         return new NodeAuthError(
             NodeAuthErrorMessage.stateNotFoundError.code,
-            "",
+            correlationId,
             NodeAuthErrorMessage.stateNotFoundError.desc
         );
     }
@@ -148,10 +152,12 @@ export class NodeAuthError extends AuthError {
     /**
      * Creates an error thrown when redirectUri is provided in an unsupported scenario
      */
-    static createRedirectUriNotSupportedError(): NodeAuthError {
+    static createRedirectUriNotSupportedError(
+        correlationId: string = ""
+    ): NodeAuthError {
         return new NodeAuthError(
             NodeAuthErrorMessage.redirectUriNotSupported.code,
-            "",
+            correlationId,
             NodeAuthErrorMessage.redirectUriNotSupported.desc
         );
     }

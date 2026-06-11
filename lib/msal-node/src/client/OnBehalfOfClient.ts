@@ -109,7 +109,7 @@ export class OnBehalfOfClient extends BaseClient {
             );
             throw createClientAuthError(
                 ClientAuthErrorCodes.tokenRefreshRequired,
-                ""
+                request.correlationId
             );
         } else if (
             TimeUtils.isTokenExpired(
@@ -127,7 +127,7 @@ export class OnBehalfOfClient extends BaseClient {
             );
             throw createClientAuthError(
                 ClientAuthErrorCodes.tokenRefreshRequired,
-                ""
+                request.correlationId
             );
         }
 
@@ -255,7 +255,7 @@ export class OnBehalfOfClient extends BaseClient {
         } else if (numAccessTokens > 1) {
             throw createClientAuthError(
                 ClientAuthErrorCodes.multipleMatchingTokens,
-                ""
+                request.correlationId
             );
         }
 

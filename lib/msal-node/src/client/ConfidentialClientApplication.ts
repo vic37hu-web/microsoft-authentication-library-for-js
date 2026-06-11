@@ -196,7 +196,7 @@ export class ConfidentialClientApplication
         ) {
             throw createClientAuthError(
                 NodeClientAuthErrorCodes.missingTenantIdError,
-                ""
+                validRequest.correlationId
             );
         }
 

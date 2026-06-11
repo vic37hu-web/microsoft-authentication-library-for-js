@@ -475,7 +475,7 @@ export abstract class ClientApplication {
         correlationId: string
     ): void {
         if (!state) {
-            throw NodeAuthError.createStateNotFoundError();
+            throw NodeAuthError.createStateNotFoundError(correlationId);
         }
 
         if (state !== cachedState) {

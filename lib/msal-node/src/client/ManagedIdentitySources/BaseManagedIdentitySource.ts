@@ -296,7 +296,7 @@ export abstract class BaseManagedIdentitySource {
             } else {
                 throw createClientAuthError(
                     ClientAuthErrorCodes.networkError,
-                    ""
+                    managedIdentityRequest.correlationId
                 );
             }
         }

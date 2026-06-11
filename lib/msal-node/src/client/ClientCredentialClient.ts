@@ -236,7 +236,7 @@ export class ClientCredentialClient extends BaseClient {
         } else if (accessTokens.length > 1) {
             throw createClientAuthError(
                 ClientAuthErrorCodes.multipleMatchingTokens,
-                ""
+                correlationId
             );
         }
         return accessTokens[0] as AccessTokenEntity;
