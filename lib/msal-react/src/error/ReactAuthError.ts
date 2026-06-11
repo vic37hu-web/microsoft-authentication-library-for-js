@@ -28,18 +28,22 @@ export class ReactAuthError extends AuthError {
         this.name = "ReactAuthError";
     }
 
-    static createInvalidInteractionTypeError(): ReactAuthError {
+    static createInvalidInteractionTypeError(
+        correlationId?: string
+    ): ReactAuthError {
         return new ReactAuthError(
             ReactAuthErrorMessage.invalidInteractionType.code,
-            "",
+            correlationId || "",
             ReactAuthErrorMessage.invalidInteractionType.desc
         );
     }
 
-    static createUnableToFallbackToInteractionError(): ReactAuthError {
+    static createUnableToFallbackToInteractionError(
+        correlationId?: string
+    ): ReactAuthError {
         return new ReactAuthError(
             ReactAuthErrorMessage.unableToFallbackToInteraction.code,
-            "",
+            correlationId || "",
             ReactAuthErrorMessage.unableToFallbackToInteraction.desc
         );
     }
