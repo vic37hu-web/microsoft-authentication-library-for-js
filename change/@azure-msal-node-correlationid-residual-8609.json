@@ -1,7 +1,0 @@
-{
-    "type": "patch",
-    "comment": "Thread correlationId through ClientApplication.validateState (now requires correlationId for stateMismatch errors).",
-    "packageName": "@azure/msal-node",
-    "email": "sameera.gajjarapu@microsoft.com",
-    "dependentChangeType": "patch"
-}
