@@ -21,6 +21,8 @@ export class NestedAppAuthError extends AuthError {
     public static createUnsupportedError(
         correlationId?: string
     ): NestedAppAuthError {
+        // Some controller stubs (perf callbacks, getPerformanceClient, getRedirectResponse)
+        // have no request param and thus no correlationId to forward
         return new NestedAppAuthError(unsupportedMethod, correlationId || "");
     }
 }

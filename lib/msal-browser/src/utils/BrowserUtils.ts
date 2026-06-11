@@ -101,6 +101,8 @@ export function parseAuthResponseFromUrl(): {
         params = new URLSearchParams(payload);
     }
 
+    // Called by the redirect-bridge entry point before any request context exists,
+    // so correlationId is intentionally empty for the throws below.
     if (!payload || !params) {
         throw createBrowserAuthError(BrowserAuthErrorCodes.emptyResponse, "");
     }
@@ -386,8 +388,11 @@ export function getCurrentUri(): string {
 /**
  * Gets the homepage url for the current window location.
  */
-export function getHomepage(): string {
-    const currentUrl = new UrlString(window.location.href, "");
+export function getHomepage(correlationId?: string): string {
+    const currentUrl = new UrlString(
+        window.location.href,
+        correlationId || ""
+    );
     const urlComponents = currentUrl.getUrlComponents();
     return `${urlComponents.Protocol}//${urlComponents.HostNameAndPort}/`;
 }

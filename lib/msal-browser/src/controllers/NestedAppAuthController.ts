@@ -675,11 +675,13 @@ export class NestedAppAuthController implements IController {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     addPerformanceCallback(callback: PerformanceCallbackFunction): string {
+        // No request context: callback registration is not per-request
         throw NestedAppAuthError.createUnsupportedError();
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     removePerformanceCallback(callbackId: string): boolean {
+        // No request context: callback registration is not per-request
         throw NestedAppAuthError.createUnsupportedError();
     }
 
@@ -831,10 +833,12 @@ export class NestedAppAuthController implements IController {
     }
 
     getPerformanceClient(): IPerformanceClient {
+        // Accessor stub with no request context
         throw NestedAppAuthError.createUnsupportedError();
     }
 
     getRedirectResponse(): Map<string, Promise<AuthenticationResult | null>> {
+        // Accessor stub with no request context
         throw NestedAppAuthError.createUnsupportedError();
     }
 

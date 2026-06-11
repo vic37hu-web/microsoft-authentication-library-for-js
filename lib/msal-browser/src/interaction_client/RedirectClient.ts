@@ -532,7 +532,9 @@ export class RedirectClient extends StandardInteractionClient {
                 let processHashOnRedirect: boolean = true;
                 if (!loginRequestUrl) {
                     // Redirect to home page if login request url is empty
-                    const homepage = BrowserUtils.getHomepage();
+                    const homepage = BrowserUtils.getHomepage(
+                        this.correlationId
+                    );
                     // Cache the homepage under ORIGIN_URI to ensure cached hash is processed on homepage
                     this.browserStorage.setTemporaryCache(
                         TemporaryCacheKeys.ORIGIN_URI,

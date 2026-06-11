@@ -410,6 +410,7 @@ export abstract class BaseManagedIdentitySource {
         logger: Logger
     ): string => {
         try {
+            // Static boot-time helper invoked from each MI source's tryCreate() before any request exists
             return new UrlString(envVariable, "").urlString;
         } catch (error) {
             logger.info(
