@@ -212,7 +212,7 @@ export type BrokerConnectionEvent = {
 //
 // @public
 export class BrowserAuthError extends AuthError {
-    constructor(errorCode: string, subError?: string);
+    constructor(errorCode: string, correlationId: string, subError?: string);
 }
 
 declare namespace BrowserAuthErrorCodes {
@@ -321,7 +321,7 @@ export type BrowserConfiguration = {
 //
 // @public
 export class BrowserConfigurationAuthError extends AuthError {
-    constructor(errorCode: string, errorMessage?: string);
+    constructor(errorCode: string, correlationId: string, errorMessage?: string);
 }
 
 declare namespace BrowserConfigurationAuthErrorCodes {
@@ -719,7 +719,7 @@ function getCurrentUri(): string;
 // Warning: (ae-missing-release-tag) "getHomepage" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
 // @public
-function getHomepage(): string;
+function getHomepage(correlationId?: string): string;
 
 // Warning: (ae-missing-release-tag) "getRequestFailed" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
@@ -1568,9 +1568,9 @@ export type WrapperSKU = (typeof WrapperSKU)[keyof typeof WrapperSKU];
 
 // Warnings were encountered during analysis:
 //
-// src/cache/LocalStorage.ts:366:8 - (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-// src/cache/LocalStorage.ts:429:8 - (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
-// src/cache/LocalStorage.ts:460:8 - (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+// src/cache/LocalStorage.ts:370:8 - (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+// src/cache/LocalStorage.ts:433:8 - (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
+// src/cache/LocalStorage.ts:464:8 - (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
 // src/config/Configuration.ts:222:5 - (ae-incompatible-release-tags) The symbol "experimental" is marked as @public, but its signature references "BrowserExperimentalOptions" which is marked as @internal
 // src/config/Configuration.ts:231:5 - (ae-forgotten-export) The symbol "InternalAuthOptions" needs to be exported by the entry point index.d.ts
 // src/event/EventHandler.ts:116:8 - (tsdoc-param-tag-missing-hyphen) The @param block should be followed by a parameter name and then a hyphen
