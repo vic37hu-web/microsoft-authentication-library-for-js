@@ -546,6 +546,11 @@ export class RefreshTokenClient {
             });
         }
 
+        RequestParameterBuilder.addAttributeTokens(
+            parameters,
+            request.attributeTokens
+        );
+
         RequestParameterBuilder.instrumentBrokerParams(
             parameters,
             request.correlationId,
