@@ -736,6 +736,36 @@ describe("RequestParameterBuilder unit tests", () => {
         });
     });
 
+    describe("addAttributeTokens tests", () => {
+        it("adds attribute_tokens as a single space-delimited parameter", () => {
+            const parameters = new Map<string, string>();
+
+            RequestParameterBuilder.addAttributeTokens(parameters, [
+                "token-1",
+                "token-2",
+                "token-3",
+            ]);
+
+            expect(parameters.get(AADServerParamKeys.ATTRIBUTE_TOKENS)).toBe(
+                "token-1 token-2 token-3"
+            );
+        });
+
+        it("omits attribute_tokens when undefined or empty", () => {
+            const parameters = new Map<string, string>();
+
+            RequestParameterBuilder.addAttributeTokens(parameters, undefined);
+            expect(parameters.has(AADServerParamKeys.ATTRIBUTE_TOKENS)).toBe(
+                false
+            );
+
+            RequestParameterBuilder.addAttributeTokens(parameters, []);
+            expect(parameters.has(AADServerParamKeys.ATTRIBUTE_TOKENS)).toBe(
+                false
+            );
+        });
+    });
+
     describe("broker parameters tests", () => {
         const redirectUri = "embedded-redirect-uri";
         const clientId = "embedded-client-id";
